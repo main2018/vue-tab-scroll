@@ -1,0 +1,7 @@
+/build/
+/config/
+/dist/
+/*.js
+/src/common/js/*.js
+/src/base/vue-pull-to/*.js
+/src/base/vue-pull-to/*.vue
