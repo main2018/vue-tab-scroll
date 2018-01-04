@@ -8,7 +8,7 @@
 -->
 <template lang="pug">
   .scroll
-    pull-to(:top-load-method="refresh", :bottom-load-method="searchMore")
+    pull-to(:top-load-method="refresh", :bottom-load-method="searchMore", :isYScroll="isYScroll")
       slot
 </template>
 
@@ -18,6 +18,9 @@
   export default {
     components: {
       pullTo
+    },
+    props: {
+      isYScroll: Boolean
     },
     data() {
       return {}

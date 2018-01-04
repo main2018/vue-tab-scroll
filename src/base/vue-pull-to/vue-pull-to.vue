@@ -29,7 +29,7 @@
   import { throttle } from './utils';
   import { TOP_DEFAULT_CONFIG, BOTTOM_DEFAULT_CONFIG } from './config';
 
-  const PX = 30
+  const PX = 10
 
   export default {
     name: 'vue-pull-to',
@@ -87,7 +87,8 @@
         default: () => {
           return {};
         }
-      }
+      },
+      isYScroll: Boolean
     },
     data() {
       return {
@@ -110,7 +111,8 @@
         throttleEmitTopPull: null,
         throttleEmitBottomPull: null,
         throttleEmitScroll: null,
-        throttleOnInfiniteScroll: null
+        throttleOnInfiniteScroll: null,
+        isXScroll: true
       };
     },
     computed: {
@@ -197,6 +199,7 @@
         this.beforeDiff = this.diff;
         this.startScrollTop = this.scrollEl.scrollTop;
         this.bottomReached = this.checkBottomReached();
+        this.isXScroll = true
       },
 
       handleTouchMove(event) {
@@ -204,9 +207,10 @@
         this.currentY = event.touches[0].clientY;
         this.diffX = Math.abs(this.currentX - this.startX)
         this.diffY = Math.abs(this.currentY - this.startY)
-        if (this.diffY <= this.diffX) {
-          return
+        if (this.diffY > this.diffX) {
+          this.isXScroll = false
         }
+        if (this.isXScroll || !this.isYScroll) return
         this.distance = (this.currentY - this.startY) / this.distanceIndex + this.beforeDiff;
         this.direction = this.distance > 0 ? 'down' : 'up';
 
@@ -244,7 +248,7 @@
       },
 
       handleTouchEnd(event) {
-        if (this.diffY <= this.diffX) {
+        if (this.isXScroll || !this.isYScroll) {
           return
         }
         event.stopPropagation();
